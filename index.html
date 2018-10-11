@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"><head>  
+<html lang="en"><head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>Computer Vision Class Project
-  | ECE, Virginia Tech | Fall 2015: ECE 5554/4984</title>
+  | CS, Georgia Tech | Fall 2018: CS 4476</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
-<!-- Le styles -->  
+<!-- Le styles -->
   <link href="css/bootstrap.css" rel="stylesheet">
 <style>
 body {
@@ -21,7 +21,7 @@ color: #3366CC;
 color: #FF9900;
 }
 </style>
-  
+
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
@@ -33,14 +33,12 @@ color: #FF9900;
 <div class="container">
 <div class="page-header">
 
-<!-- Title and Name --> 
-<h1>Your Title Here</h1> 
-<span style="font-size: 20px; line-height: 1.5em;"><strong>Your Name Here</strong></span><br>
-<span style="font-size: 18px; line-height: 1.5em;">Fall 2015 ECE 5554/4984 Computer Vision: Class Project</span><br>
-<span style="font-size: 18px; line-height: 1.5em;">Virginia Tech</span>
+<!-- Title and Name -->
+<h1>Lane Detection</h1>
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Soham Gadgil, Shaurye Aggarwal, William Xia, Abhishek Tumuluru, Mohit Chauhan</strong></span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Fall 2018 CS 4476 Computer Vision: Class Project</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
 <hr>
-
-Please see <a href="http://vision.cs.utexas.edu/projects/adapted_attributes/">this</a> for an example of how to lay out the various details of your project. You may need to provide more details than this, beause you will not be submitting an associated paper to accompany the webpage. So the page should be self-contained
 
 <!-- Goal -->
 <h3>Abstract</h3>
@@ -51,7 +49,7 @@ One or two sentences on the motivation behind the problem you are solving. One o
 <h3>Teaser figure</h3>
 A figure that conveys the main idea behind the project or the main application being addressed.
 <br><br>
-<!-- Main Illustrative Figure --> 
+<!-- Main Illustrative Figure -->
 <div style="text-align: center;">
 <img style="height: 200px;" alt="" src="mainfig.png">
 </div>
@@ -59,21 +57,33 @@ A figure that conveys the main idea behind the project or the main application b
 <br><br>
 <!-- Introduction -->
 <h3>Introduction</h3>
-Motivation behind the problem you are solving, what applications it has, any brief background on the particular domain you are working in (if not regular RBG photographs), etc. If you are using a new way to solve an existing problem, briefly mention and describe the existing approaches and tell us how your approach is new.
-
+The goal of our team’s project is to build a computer vision system that can detect which lane on the road a car is driving on. In addition, we aim to detect the degree by which the road is turning in the event that there is curvature on the road. The input to this system will be a short video of a car driving along a road that has clear lane markings on it. The output will be a video of the car driving along the road along with an overlaid image that shows which lane the car is on. For example, if the car is in the middle lane in the video, then the output video would show the car moving with the middle lane having a different color than the other lanes. The output video will also contain a varying numeric value at the top of the screen that indicates how many degrees the road is curving by. This could be a number between 0 and 360 degrees or a number representing the radius of curvature, depending on what gives more information about how much to turn the steering wheel. These two pieces of information (current lane and degree of turning) are the first steps in building an steering system for an autonomous car since the car will be able to steer such that it stays in its current lane, while also adjusting to the curvature of the road.
 <br><br>
 <!-- Approach -->
 <h3>Approach</h3>
-Describe very clearly and systematically your approach to solve the problem. Tell us exactly what existing implementations you used to build your system. Tell us what obstacles you faced and how you addressed them. Justify any design choices or judgment calls you made in your approach.
+To achieve lane detection our team will focus on two approaches: classical and machine learning methodologies.  Part of our objective will be to compare the performance of the two paradigms, namely the speed, accuracy, and resource of the algorithms.  To achieve these comparisons, we will measure the performance on a chosen dataset and use both types of approaches to build a better understanding of how quickly each algorithm can accomplish the task.  Speed will be measured by how fast each algorithm completes the lane detection, accuracy will be measured by how close the algorithms are to ground truth, and the resource consumption will be measured by the amount of memory and code length used. <br>
+	The classical approach will be based on edge detection and feature extraction.  It can be assumed that lanes on a road will have high contrast to the surrounding pavement, so edge detectors such as the Canny edge detectors will be able to detect the outlines of the lanes.  In addition, feature extraction will be needed to identify the lines that represent the boundaries for the car to follow, namely the Hough Transform can help identify lines in images which can then be used to draw an overlay. <br>
+	The machine learning approach will be based on Convolutional Neural Networks and/or similar technologies.  The neural network will be trained on images and be tasked with identifying lanes through associating images with a ground truth dataset.  The main difference between the machine learning approach and the classical approach is that machine learning presents an end to end solution; there is only one technique that needs to be applied in order for the program to achieve its goal, compared to the classical approach, which will have multiple steps in order to detect lanes.
+
 
 <br><br>
 <!-- Results -->
 <h3>Experiments and results</h3>
-Provide details about the experimental set up (number of images/videos, number of datasets you experimented with, train/test split if you used machine learning algorithms, etc.). Describe the evaluation metrics you used to evaluate how well your approach is working. Include clear figures and tables, as well as illustrative qualitative examples if appropriate. Be sure to include obvious baselines to see if your approach is doing better than a naive approach (e.g. for classification accuracy, how well would a classifier do that made random decisions?). Also discuss any parameters of your algorithms, and tell us how you set the values of those parameters. You can also show us how the performance varies as you change those parameter values. Be sure to discuss any trends you see in your results, and explain why these trends make sense. Are the results as expected? Why?
+Since the primary focus of the project is to find the optimal lane detection algorithm and comparing the two different approaches used, most of the experiments will involve running the algorithms on test datasets and analyzing and comparing the results for  areas of improvement. This will involve test videos of two types:<br>
+<ul>
+  <li>Optimal conditions for lane detection - Good lighting conditions, well-marked lanes which remain relatively straight for a long time (such as a highway), no interruptions between lanes (such as a pedestrian crossing). Such videos are expected to result in good accuracy in detecting lanes.</li>
+  <li>Sub-Optimal conditions for lane detection - Poor lighting conditions due to cloudy weather or driving at night, poorly-marked lanes with slight discontinuations, lanes which curve (such as in a turnaround), possible interruptions between lanes like at an intersection. Such videos are expected to be less accurate for detecting lanes and would be the ones requiring improvements in the algorithm.</li>
+</ul>
+<br>
+This project compares two approaches of detecting lanes. The first one is the classical approach involving image manipulation and feature detection. The classical approach does not need a dataset per se, since there is no “learning” involved. The second one is using Machine Learning models to train using labelled data and to detect lanes in unseen data. Collecting our own data would be a challenge so we will rely on existing datasets to provide us with our training data. We plan to use two datasets as outlined:<br>
+<ul>
+  <li>Berkeley Deep Drive Dataset (BDD100K): This dataset, provided by the berkeley artificial intelligence research, is the largest and most diverse driving video dataset with annotations to date. It includes 100,000 video sequences with 120 million images across different times of the day and weather conditions. There is a keyframe sampled at the 10th second from each video with annotations involving lane markings.</li>
+  <li>CULane Dataset: This is a large scale dataset geared toward research on lane detection. It includes more that 55 hours of video with the extraction of 133235 frames. The dataset is manually annotated for each frame and the test set is divided into normal and 8 challenging categories.</li>
+</ul>
 
 <br><br>
 
-<!-- Main Results Figure --> 
+<!-- Main Results Figure -->
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="results.png">
 </div>
@@ -84,7 +94,7 @@ Provide details about the experimental set up (number of images/videos, number o
 Show several visual examples of inputs/outputs of your system (success cases and failures) that help us better understand your approach.
 <br><br>
 
-<!-- Main Results Figure --> 
+<!-- Main Results Figure -->
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="qual_results.png">
 </div>
@@ -94,7 +104,7 @@ Show several visual examples of inputs/outputs of your system (success cases and
 
 
   <hr>
-  <footer> 
+  <footer>
   <p>© You Name Here</p>
   </footer>
 </div>
