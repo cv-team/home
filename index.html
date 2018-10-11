@@ -35,15 +35,14 @@ color: #FF9900;
 
 <!-- Title and Name -->
 <h1>Lane Detection</h1>
-<span style="font-size: 20px; line-height: 1.5em;"><strong>Soham Gadgil, Shaurye Aggarwal, William Xia, Abhishek Tumuluru, Mohit Chauhan</strong></span><br>
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Soham Gadgil, Ashwin Natarajan, Shaurye Aggarwal, William Xia, Abhishek Tumuluru, Mohit Chauhan</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Fall 2018 CS 4476 Computer Vision: Class Project</span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
 <hr>
 
 <!-- Goal -->
 <h3>Abstract</h3>
-
-One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.
+Lane detection is an increasingly relevant topic given the advent of driver-assist technologies, self-driving vehicles, and automation. Implementing a Computer Vision approach in openCV to detect lanes and overlay them is one of the main parts of our project. In addition to pure Computer vision methods, a machine learning method combined with some computer vision is a potential way to solve this problem. We compare the different approaches and point out conditions wherein different approaches perform better.
 <br><br>
 <!-- figure -->
 <!-- <h3>Teaser figure</h3>
@@ -57,7 +56,7 @@ A figure that conveys the main idea behind the project or the main application b
 <br><br>
 <!-- Introduction -->
 <h3>Introduction</h3>
-The goal of our team’s project is to build a computer vision system that can detect which lane on the road a car is driving on. In addition, we aim to detect the degree by which the road is turning in the event that there is curvature on the road. The input to this system will be a short video of a car driving along a road that has clear lane markings on it. The output will be a video of the car driving along the road along with an overlaid image that shows which lane the car is on. For example, if the car is in the middle lane in the video, then the output video would show the car moving with the middle lane having a different color than the other lanes. The output video will also contain a varying numeric value at the top of the screen that indicates how many degrees the road is curving by. This could be a number between 0 and 360 degrees or a number representing the radius of curvature, depending on what gives more information about how much to turn the steering wheel. These two pieces of information (current lane and degree of turning) are the first steps in building an steering system for an autonomous car since the car will be able to steer such that it stays in its current lane, while also adjusting to the curvature of the road.
+The goal of our team’s project is divided into three sections. The first is to build a computer vision system that can detect which lane on the road a car is driving on. Secondly, we aim to detect the degree by which the road is turning in the event that there is curvature on the road. The third part of our project is the comparison of the computational performance and outputs of a Machine Learning model versus our classic Computer Vision approach. CNNs, Deep learning, and K-means are potential machine learning models that can be used for this purpose. The input to the classical system will be a short video of a car driving along a road that has clear lane markings on it. The output will be a video of the car driving along the road along with an overlaid image that shows which lane the car is on. For example, if the car is in the middle lane in the video, then the output video would show the car moving with the middle lane having a different color than the other lanes. The output video will also contain a varying numeric value at the top of the screen that indicates how many degrees the road is curving by. This could be a number between 0 and 360 degrees or a number representing the radius of curvature, depending on what gives more information about how much to turn the steering wheel. These two pieces of information (current lane and degree of turning) are the first steps in building an steering system for an autonomous car since the car will be able to steer such that it stays in its current lane, while also adjusting to the curvature of the road. Like the Computer Vision approach, the ML model will take in a video of a car driving along a road and it will return a similar video with highlighted lane markings overlaid on top of the roads in the frames. 
 <br><br>
 <!-- Approach -->
 <h3>Approach</h3>
@@ -80,14 +79,21 @@ This project compares two approaches of detecting lanes. The first one is the cl
   <li><a href = "https://bair.berkeley.edu/blog/2018/05/30/bdd/"> Berkeley Deep Drive Dataset (BDD100K)</a>: This dataset, provided by the berkeley artificial intelligence research, is the largest and most diverse driving video dataset with annotations to date. It includes 100,000 video sequences with 120 million images across different times of the day and weather conditions. There is a keyframe sampled at the 10th second from each video with annotations involving lane markings.</li>
   <li><a href = "https://xingangpan.github.io/projects/CULane.html">CULane Dataset</a>: This is a large scale dataset geared toward research on lane detection. It includes more that 55 hours of video with the extraction of 133235 frames. The dataset is manually annotated for each frame and the test set is divided into normal and 8 challenging categories.</li>
 </ul>
-
-<br><br>
-
+<br>
 <!-- Main Results Figure -->
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="cu_lane.png">
 <div> CULane Dataset examples and distribution </div>
 </div>
+<br>
+We will be using some of the guidelines mentioned in udacity’s self-driving car nanodegree project on lane detection using the classical approach. However, we will be implementing our own video frame processing and feature extractions methods to obtain the lane overlay. Also, as mentioned in the problem statement, we will be calculating the number of degrees that the steering wheel needs to turn by on a circular lane. For the approach using Machine Learning, we will using an existing Neural Network model to train our video dataset and test it using the optimal and suboptimal datasets. Other potential models that can be used are K-means and CNNs.<br><br>
+
+In the machine learning approach, it will take time to train the model but testing it would be fast while in the classical approach, there is no training involved but it will take time to pre-process the video frames. Thus, it is difficult to ascertain which approach would work better without putting both to the test. Also, it is expected that the accuracy will not be 100% since there is always some uncertainty involved in either of the methods and there are numerous factors which affect the quality of the video frames. There would be some frames in which one of the features would not be captured, resulting in inaccurate lane detection.<br><br>
+
+A successful project would include a good accuracy for lane detection and radius of curvature, for both the above-mentioned approaches, especially for the suboptimal dataset. We wish to aim for an accuracy of ~95% for optimal video frames and ~86% for suboptimal video frames. These numbers have been obtained from the past research that has been done in the field of lane detection. The completed project would also involve detailed analysis of the two methods, providing comparative statistics which are useful and quantifiable. Besides accuracy, the comparison metrics will evaluate the two approaches based on their speed, memory requirements, frame-size of the input etc. Such a comparison will assist in providing specific conditions in which one approach proves to be better than the other and detailing which method should be used based on the constraints presented.  For instance, one approach might be better suited than the other if the use case can sacrifice a small percent of accuracy for obtaining optimal speed.
+
+<br><br>
+
 <br><br>
 
 <!-- Results -->
@@ -106,7 +112,7 @@ Show several visual examples of inputs/outputs of your system (success cases and
 
   <hr>
   <footer>
-  <p>© Soham Gadgil, Shaurye Aggarwal, William Xia, Abhishek Tumuluru, Mohit Chauhan</p>
+  <p>© Soham Gadgil, Ashwin Natarajan, Shaurye Aggarwal, William Xia, Abhishek Tumuluru, Mohit Chauhan</p>
   </footer>
 </div>
 </div>
