@@ -61,7 +61,7 @@ The goal of our team’s project is divided into three sections. The first is to
 <!-- Approach -->
 <h3>Approach</h3>
 To achieve lane detection our team will focus on two approaches: classical and machine learning methodologies.  Part of our objective will be to compare the performance of the two paradigms, namely the speed, accuracy, and resource of the algorithms.  To achieve these comparisons, we will measure the performance on a chosen dataset and use both types of approaches to build a better understanding of how quickly each algorithm can accomplish the task.  Speed will be measured by how fast each algorithm completes the lane detection, accuracy will be measured by how close the algorithms are to ground truth, and the resource consumption will be measured by the amount of memory and code length used. <br><br>
-The preliminary classical approach to lane detection has been implemented. It is able to detect lanes in image frames, albeit not perfectly. There are still tweaks needed to be made to the hyperparameters. Also, different techniques need to be compared to for the individual steps to determine the optimal method. The current results are displayed in the subsequent sections. As implemented currently, the algorithm has the following steps. The input of each step is the output of the previous step:
+The preliminary classical approach to lane detection has been implemented. It is able to detect lanes in image frames, albeit not perfectly. There are still tweaks needed to be made to the hyperparameters. The current results are displayed in the subsequent sections. As implemented currently, the algorithm has the following steps. The input of each step is the output of the previous step:
 <ol>
   <li> Define a line class in order to draw line on image and use x,y coordinates to define a line </li>
   <li> Get a test image directory </li>
@@ -118,7 +118,7 @@ In the classical approach, we had to make some decisions regarding the hyperpara
 <br>
 Error in the classical approach is calculated using the formula to determine perpendicular distance from a point to a line.  The line in this case is the calculated lane line and the point is the ground truth feature point for the respective lane.  Ideally, the distance would be zero, as the line predicted would perfectly match the feature set for ground truth.  The errors are displayed below in the qualitative results section under each respective image set.
 <br><br>
-For the machine learning approach we found the implementation for the LaneNet model on <a href = "https://github.com/MaybeShewill-CV/lanenet-lane-detection"> Github </a>. We further used their pre-trained model that was trained on the TuSimple Data Set. Next we used a subset of CULane Dataset to get preliminary results and accuracy. We plan to calculate the accuracy using the average number of correct pixels. After looking at the results from classical approach as well, we are going to decide a common metric to compute the accuracy and compare the overall results.
+For the machine learning approach we found the implementation for the LaneNet model on <a href = "https://github.com/MaybeShewill-CV/lanenet-lane-detection"> Github </a>. We further used their pre-trained model that was trained on the TuSimple Data Set. Next we used a subset of CULane Dataset to get preliminary results and accuracy. We plan to calculate the accuracy using the average number of correct pixels.
 <br><br>
 The reason we used different evaluation metrics for the two approaches was to compare and contrast the different methods to determine which one worked better. In the future update, we will decide on the metric which proves to be more accurate and use it for both approaches.
 <br><br>
@@ -130,6 +130,8 @@ A successful project would include a good accuracy for lane detection and radius
 <!-- Results -->
 <h3>Qualitative results</h3>
 <h4>Machine Learning Results </h4>
+
+The images below are examples of the input and output we use with our machine learning technique. While the lanes in the first input are straight, the one in the second one are curved. The images also differ in their field of view and lighting. The output images identify the lanes, and mark the different identified lanes using different colors. In both these cases, the model is able to accurately approximate the lanes.
   <div class = "row" style="text-align: center">
     <div style = "width: 40%; display: inline-block">
       <img src="ml_input_0.png" alt="ML Input 1">
@@ -152,7 +154,9 @@ A successful project would include a good accuracy for lane detection and radius
     </div>
   </div>
 
+
   <h4> Classical Results </h4>
+  <h5> Good Image Example </h5>
   The images below are an example successful input and output of our algorithm. As you can see, the overlaid lanes match up quite well with the actual lanes on the road. Some notable characteristics of the image below are:
   <ul>
   <li> Good lighting conditions </li>
