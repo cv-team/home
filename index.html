@@ -61,9 +61,27 @@ The goal of our team’s project is divided into three sections. The first is to
 <!-- Approach -->
 <h3>Approach</h3>
 To achieve lane detection our team will focus on two approaches: classical and machine learning methodologies.  Part of our objective will be to compare the performance of the two paradigms, namely the speed, accuracy, and resource of the algorithms.  To achieve these comparisons, we will measure the performance on a chosen dataset and use both types of approaches to build a better understanding of how quickly each algorithm can accomplish the task.  Speed will be measured by how fast each algorithm completes the lane detection, accuracy will be measured by how close the algorithms are to ground truth, and the resource consumption will be measured by the amount of memory and code length used. <br><br>
-	The classical approach will be based on edge detection and feature extraction.  It can be assumed that lanes on a road will have high contrast to the surrounding pavement, so edge detectors such as the Canny edge detectors will be able to detect the outlines of the lanes.  In addition, feature extraction will be needed to identify the lines that represent the boundaries for the car to follow, namely the Hough Transform can help identify lines in images which can then be used to draw an overlay. <br><br>
-	The machine learning approach will be based on Convolutional Neural Networks and/or similar technologies.  The neural network will be trained on images and be tasked with identifying lanes through associating images with a ground truth dataset.  The main difference between the machine learning approach and the classical approach is that machine learning presents an end to end solution; there is only one technique that needs to be applied in order for the program to achieve its goal, compared to the classical approach, which will have multiple steps in order to detect lanes.
-
+The preliminary classical approach to lane detection has been implemented. It is able to detect lanes in image frames, albeit not perfectly. There are still tweaks needed to be made to the hyperparameters. Also, different techniques need to be compared to for the individual steps to determine the optimal method. The current results are displayed in the subsequent sections. As implemented currently, the algorithm has the following steps. The input of each step is the output of the previous step:
+<ol>
+  <li> Define a line class in order to draw line on image and use x,y coordinates to define a line </li>
+  <li> Get a test image directory </li>
+  <li> Specify a specific test image </li>
+  <li> Obtain ground truth data from provided text file </li>
+  <li> Preprocess the image so that image is in grayscale and image is blurred with Gaussian blur </li>
+  <li> Calculate Edges with Canny Edge Detector </li>
+  <li> Apply Hough Transform to detect lines </li>
+  <li> Filter two lines such that lines match what is expected for left and right lane lines </li>
+  <li> Begin Drawing lines </li>
+  <li> Define a polygon mask for lanes </li>
+  <li> Mask lines such that lines only are drawn on relevant section of road </li>
+  <li> Evaluate the error compared to the ground truth using distance of a point to a line </li>
+</ol>
+ <br><br>
+For the machine learning implementation, we chose LaneNet,  a deep, branched, multi-task network for lane detection and H-Net as described in [1]. This system claims to be robust to road scene variations unlike many of the classical lane detection techniques. Compared to other machine learning techniques this network doesn’t require predefined and fixed number of lanes in order to detect them and is further robust to lane changes.
+<br><br>
+The network (and the problem) in this technique is branched into two: segmentation branch and lane embedding branch. The segmentation branch is tasked with deciding whether a pixel belongs to a lane or not and it outputs a binary segmentation map. This part of the network is trained using the standard cross-entropy loss function. Using the output of the segmentation branch, the lane embedding branch then disentangles the lane pixels. It outputs an N-channel embedding per pixel where N is the number of embeddings by using the clustering loss function exploited for distance metric learning as proposed in [2]. This branch produces each embedding in such a way such that embeddings of the pixels that are in the same lane are as close as possible and the embeddings of the pixels belonging to different lanes as far as possible. Due to this fact, the pixels of the same lanes are then clustered using an iterative process that ends when all pixels have been assigned to a lane.
+<br><br>
+Given an input image, the networks outputs a map where each lane pixel is labeled with a lane id. To actually fit curves to the lane, instead of using the standard “bird-eye” transformation the system employs H-Net which outputs the optimal transformation H given an input image. This makes the curve-fitting robust to ground-plane changes. The transformation H is then used to transform each lane pixel and fit a 3rd order polynomial. Each lane’s polynomial is then projected back into the image space.
 
 <br><br>
 <!-- Results -->
@@ -86,20 +104,103 @@ This project compares two approaches of detecting lanes. The first one is the cl
 <div> CULane Dataset examples and distribution </div>
 </div>
 <br>
-We will be using some of the guidelines mentioned in udacity’s self-driving car nanodegree project on lane detection using the classical approach. However, we will be implementing our own video frame processing and feature extractions methods to obtain the lane overlay. Also, as mentioned in the problem statement, we will be calculating the number of degrees that the steering wheel needs to turn by on a circular lane. For the approach using Machine Learning, we will using an existing Neural Network model to train our video dataset and test it using the optimal and suboptimal datasets. Other potential models that can be used are K-means and CNNs.<br><br>
-
-In the machine learning approach, it will take time to train the model but testing it would be fast while in the classical approach, there is no training involved but it will take time to pre-process the video frames. Thus, it is difficult to ascertain which approach would work better without putting both to the test. Also, it is expected that the accuracy will not be 100% since there is always some uncertainty involved in either of the methods and there are numerous factors which affect the quality of the video frames. There would be some frames in which one of the features would not be captured, resulting in inaccurate lane detection.<br><br>
-
+In the classical approach, we had to make some decisions regarding the hyperparameter values. The parameters set are discussed below:
+<ul>
+<li> Gaussian kernel size: 17x17 - The kernel size drives the filter amount. A larger size, corresponding to a larger convolution mask, will result in greater filtering. This helps in better noise reduction but reduces the quality of the image. Thus, a sweet spot needs to be found which accounts for both factors </li>
+<li> Canny Edge Threshold:
+<ol>
+  <li> Hysteresis Low: 50 - Any edges with an intensity gradient that is lower than this value can be considered non-edges</li>
+  <li> Hysteresis High: 80 - Any edges with an intensity gradient that is higher than this value can be considered edges</li>
+  <li> Any intensity gradient value that is in between the two values are considered edges based on the connectivity</li>
+</ol>
+<li>Lane Filtering: After we obtain all candidate lines, we filter the lines such that we only keep lines that are between 30 and 60 degrees, which can be approximated by filtering slopes of 0.5 and 2.  These degree requirements reflect the fact that from the perspective of a camera in a car, the lanes will appear to be skewed between those values and thus an assumption can be made as to how the lines are oriented
+</ul>
+<br>
+Error in the classical approach is calculated using the formula to determine perpendicular distance from a point to a line.  The line in this case is the calculated lane line and the point is the ground truth feature point for the respective lane.  Ideally, the distance would be zero, as the line predicted would perfectly match the feature set for ground truth.  The errors are displayed below in the qualitative results section under each respective image set.
+<br><br>
+For the machine learning approach we found the implementation for the LaneNet model on Github. We further used their pre-trained model that was trained on the TuSimple Data Set. Next we used a subset of CULane Dataset to get preliminary results and accuracy. We plan to calculate the accuracy using the average number of correct pixels. After looking at the results from classical approach as well, we are going to decide a common metric to compute the accuracy and compare the overall results.
+<br><br>
+The reason we used different evaluation metrics for the two approaches was to compare and contrast the different methods to determine which one worked better. In the future update, we will decide on the metric which proves to be more accurate and use it for both approaches.
+<br><br>
 A successful project would include a good accuracy for lane detection and radius of curvature, for both the above-mentioned approaches, especially for the suboptimal dataset. We wish to aim for an accuracy of ~95% for optimal video frames and ~86% for suboptimal video frames. These numbers have been obtained from the past research that has been done in the field of lane detection. The completed project would also involve detailed analysis of the two methods, providing comparative statistics which are useful and quantifiable. Besides accuracy, the comparison metrics will evaluate the two approaches based on their speed, memory requirements, frame-size of the input etc. Such a comparison will assist in providing specific conditions in which one approach proves to be better than the other and detailing which method should be used based on the constraints presented.  For instance, one approach might be better suited than the other if the use case can sacrifice a small percent of accuracy for obtaining optimal speed.
-
 <br><br>
 
 <br><br>
 
 <!-- Results -->
-<!-- <h3>Qualitative results</h3>
-Show several visual examples of inputs/outputs of your system (success cases and failures) that help us better understand your approach.
-<br><br> -->
+<h3>Qualitative results</h3>
+<h4>Machine Learning Results </h4>
+  <div class = "row" style="text-align: center">
+    <div style = "width: 40%; display: inline-block">
+      <img src="ml_input_0.png" alt="ML Input 1">
+      <figcaption style = "text-align: center"> Input Image 1</figcaption>
+    </div>
+    <div style = "width: 40%; display: inline-block">
+      <img src="ml_output_0.png" alt="ML Output 1">
+      <figcaption style = "text-align: center"> Extracted lane markings from the input image 1 </figcaption>
+    </div>
+  </div>
+  <br><br>
+  <div class = "row" style="text-align: center">
+    <div style = "width: 40%; display: inline-block">
+      <img src="ml_input_1.png" alt="ML Input 1">
+      <figcaption style = "text-align: center"> Input Image 2</figcaption>
+    </div>
+    <div style = "width: 40%; display: inline-block">
+      <img src="ml_output_1.png" alt="ML Output 1">
+      <figcaption style = "text-align: center"> Extracted lane markings from the input image 2 </figcaption>
+    </div>
+  </div>
+
+  <h4> Classical Results </h4>
+  The images below are an example successful input and output of our algorithm. As you can see, the overlaid lanes match up quite well with the actual lanes on the road. Some notable characteristics of the image below are:
+  <ul>
+  <li> Good lighting conditions </li>
+<li> Wide spacing between vehicles </li>
+<li> Clearly painted lane markings </li>
+<li> Many lane markings (broken and solid lanes) </li>
+
+Good lighting conditions and clearly painted markings allow the painted lanes themselves to be more easily identifiable by the Canny edge detector. More lane markings is more data for the Hough transform to identify confident lines.
+<br>
+<div class = "row" style="text-align: center">
+  <div style = "width: 40%; display: inline-block">
+    <img src="cv_good_input.jpg" alt="ML Input 1">
+    <figcaption style = "text-align: center"> Input Image</figcaption>
+  </div>
+  <div style = "width: 40%; display: inline-block">
+    <img src="cv_good_output.png" alt="ML Output 1">
+    <figcaption style = "text-align: center"> Image with overlayed lane markings </figcaption>
+  </div>
+  <br>
+  <br>
+  Left lane average pixel error: 6.3
+  <br>
+  Right lane average pixel error: 2.1
+</div>
+<br>
+<h5> Bad Image Example </h5>
+Unlike the image above, the drawn lanes in the image below are less than ideal. This could be for various reasons, of which poor lighting is the most likely. In addition to the low lighting, It is clear that the lanes are painted much fainter than the image above which makes it possible that the lane data is lost when the image is converted to grayscale, making edges more difficult to pick up by the Canny edge detector. It is evident to us further preprocessing can be done to increase the brightness and contrast of low-lighting images before applying the Canny edge detector. One more notable aspect of this image is that there is only one broken lane marking on the left of the image unlike the successful image above which has many lane markings. It would be reasonable to conclude that the accuracy of the Hough transform is dependent on the number of broken lane markings.
+<br>
+<div class = "row" style="text-align: center">
+  <div style = "width: 40%; display: inline-block">
+    <img src="cv_bad_input.jpg" alt="ML Input 1">
+    <figcaption style = "text-align: center"> Input Image</figcaption>
+  </div>
+  <div style = "width: 40%; display: inline-block">
+    <img src="cv_bad_output.png" alt="ML Output 1">
+    <figcaption style = "text-align: center"> Image with overlayed lane markings </figcaption>
+  </div>
+  <br>
+  <br>
+  <br>
+  Left lane average pixel error: 27.93
+  <br>
+Right lane average pixel error: 15.4
+
+
+</div>
+
+
 
 <!-- Main Results Figure -->
 <!-- <div style="text-align: center;">
@@ -107,8 +208,11 @@ Show several visual examples of inputs/outputs of your system (success cases and
 </div>
 <br><br> -->
 
-
-
+<h3> References </h3>
+  <ol>
+    <li> Neven, Davy, Bert De Brabandere, Stamatios Georgoulis, Marc Proesmans, and Luc Van Gool. "Towards End-to-End Lane Detection: an Instance Segmentation Approach." arXiv preprint arXiv:1802.05591 (2018).</li>
+    <li> De Brabandere, Bert, Davy Neven, and Luc Van Gool. "Semantic instance segmentation with a discriminative loss function." arXiv preprint arXiv:1708.02551 (2017). </li>
+  </ol>
 
   <hr>
   <footer>
