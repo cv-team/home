@@ -139,7 +139,7 @@ Where
 <br>
 The range of F-score is [0, 1], where an F-score of 1 implies perfect classification, and an f-score of 0 implies no correct classifications.
 <br><br>
-We chose to use f-score because our problem focused on binary classification of each pixel as a lane or not a lane. Furthermore, f-score takes into account both precision and recall, as opposed to some other metrics as sum of squared errors.
+We chose to use F-score because our problem focused on binary classification of each pixel as a lane or not a lane. Furthermore, F-score takes into account both precision and recall, as opposed to some other metrics as sum of squared errors.
 <br><br>
 To account for scaling issues and errors in possible minor errors in polynomial curve fitting, we allowed a margin of error of 30 pixels from the ground truth.
 The different conditions of the images contribute to the variance in F-scores.  Curved lanes are images where the lanes are significantly curved compared to the other datasets, crowded roads consist of images that are cluttered with other objects such as cars, dark conditions are when the images are taken in low-light, and optimal lanes are the best, clearest images of lanes we could find in the dataset.
@@ -165,6 +165,8 @@ The speed for both approaches are given in the table below (in seconds):
 <div style="text-align: center;">
 <img style="height: 150px;" alt="" src="speed_table.png">
 </div>
+ The machine learning approach is almost 10 times slower than the classical computer vision approach across all conditions.  The slower results may be due to the nature of convolutions in the novel CNN design.  Since the encoder divides the image into two branches, one for highlighting all the pixels in a lane, and one for binarizing the lane itself, the algorithm must go pixel by pixel in each image.  In addition, due to the nature of convolution, many matrix operations must be performed on the already heavily processed images, thus contributing to the long processing time.  The classical approach does not perform nearly as much full pixel processing, the primary computational bottlenecks are the image warping and binarization; but once those operations are complete the program does not further apply matrix operations since all the information needed is present in the image.
+<br><br>
 
 <!-- Results -->
   <h3><span style="text-decoration: underline;">Qualitative Results</span></h3>
@@ -237,7 +239,8 @@ This result is expected due to the nature of the algorithm.  The different branc
 <img style="height: 300px;" alt="" src="qual_results.png">
 </div>
 <br><br> -->
-<h3> Conclusion and Future Work </h3>
+  <h3><span style="text-decoration: underline;"> Conclusion and Future Work </span></h3>
+ <h4> Conclusion </h4>
 Our project’s primary goal was to detect lanes on the road the car is driving on and we achieved that by employing two different approaches: classical (using binarized grayscale perspective transform with polynomial regression) and machine learning (using deep convolutional branched neural network). Another goal of this study was to compare the two approaches; we evaluated the approaches in 4 different conditions - optimal lanes, curved lanes, crowded lanes, and lanes in the dark - on the basis of speed and f-scores. For the classical model, we found that for different cases, the same binarization threshold gave varying accuracy. Hence, we tuned the classical model for each case and compared its performance across 3 thresholds as well. We further calculated the radius of curvature and reported it in the output frames.
 <br><br>
 Our original plan was to have a video input however we used image frames from the video as the input instead. We only used CULane Dataset as it could be broken into our planned test cases easily, had sufficient number of instances for each, and was well annotated. Finally, we were planning to use pixel wise sum of squared errors but ended up using F-score instead since we felt it was a better evaluation metric as it takes both precision and recall into account.
