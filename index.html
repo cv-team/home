@@ -41,7 +41,7 @@ color: #FF9900;
 <hr>
 
 <!-- Goal -->
-<h3>Abstract</h3>
+  <h3><span style="text-decoration: underline;">Abstract</span></h3>
 Lane detection is an increasingly relevant topic given the advent of driver-assist technologies, self-driving vehicles, and automation. Implementing a Computer Vision approach in openCV to detect lanes and overlay them is one of the main parts of our project. In addition to pure Computer vision methods, a machine learning method combined with some computer vision is a potential way to solve this problem. We compare the different approaches and point out conditions wherein different approaches perform better.
 <br><br>
 To compare the two approaches, we use a similar accuracy formula across the approaches to compare the quality of our predicted output to the ground truth that is given along with the dataset. In comparing the two approaches over a variety of condition (curved roads, dark/night pictures, crowded roads, and optimal conditions) we found that the classical computer vision approach yielded consistently better results across all conditions. The time taken by each method on test cases is similar but the computer vision is slightly faster. Hence overall, the classical computer vision model performs better than a machine learning approach in lane detection for the selected dataset.
@@ -57,11 +57,11 @@ A figure that conveys the main idea behind the project or the main application b
 
 <br><br>
 <!-- Introduction -->
-<h3>Introduction</h3>
+  <h3><span style="text-decoration: underline;">Introduction</span></h3>
 The goal of our team’s project is divided into three sections. The first is to build a computer vision system that can detect which lane on the road a car is driving on. Secondly, we aim to detect the degree by which the road is turning in the event that there is curvature on the road. The third part of our project is the comparison of the computational performance and outputs of a Machine Learning model versus our classic Computer Vision approach. CNNs, Deep learning, and K-means are potential machine learning models that can be used for this purpose. The input to the classical system will be a short video of a car driving along a road that has clear lane markings on it. The output will be a video of the car driving along the road along with an overlaid image that shows which lane the car is on. For example, if the car is in the middle lane in the video, then the output video would show the car moving with the middle lane having a different color than the other lanes. The output video will also contain a varying numeric value at the top of the screen that indicates how many degrees the road is curving by. This could be a number between 0 and 360 degrees or a number representing the radius of curvature, depending on what gives more information about how much to turn the steering wheel. These two pieces of information (current lane and degree of turning) are the first steps in building an steering system for an autonomous car since the car will be able to steer such that it stays in its current lane, while also adjusting to the curvature of the road. Like the Computer Vision approach, the ML model will take in a video of a car driving along a road and it will return a similar video with highlighted lane markings overlaid on top of the roads in the frames.
 <br><br>
 <!-- Approach -->
-<h3>Approach</h3>
+  <h3><span style="text-decoration: underline;">Approach</span></h3>
 To achieve lane detection our team focuses on two approaches: classical and machine learning methodologies.  Part of our objective is to compare the performance of the two paradigms, namely the speed, accuracy, and resource of the algorithms.  To achieve these comparisons, we measure the performance on a chosen dataset and use both types of approaches to build a better understanding of how quickly each algorithm can accomplish the task.  Speed is measured by how fast each algorithm completes the lane detection, accuracy is measured by how close the algorithms are to ground truth, and the resource consumption is measured by the amount of memory and code length used.
 <br><br>
 
@@ -86,7 +86,7 @@ Given an input image, the networks outputs a map where each lane pixel is labele
 
 <br><br>
 <!-- Results -->
-<h3>Experiments and results</h3>
+  <h3><span style="text-decoration: underline;">Experiments and result</span>s</h3>
 <h4> Experiments </h4>
 Since the primary focus of the project is to find the optimal lane detection algorithm and comparing the two different approaches used, most of the experiments involved running the algorithms on test datasets and analyzing and comparing the results for areas of improvement. We looked into test video frames for 4 types of conditions: <br>
 <ol>
@@ -99,15 +99,15 @@ Since the primary focus of the project is to find the optimal lane detection alg
 This project compared two approaches of detecting lanes. The first one is the classical approach involving image manipulation and feature detection. The classical approach did not need a dataset per se, since there is no “learning” involved. The second one was using Machine Learning models to train using labelled data and to detect lanes in unseen data. Collecting our own data was a challenge so we relied on existing datasets to provide us with our training data. We used the CULane dataset [3], which is a large scale dataset geared toward research on lane detection. It includes more that 55 hours of video with the extraction of 133235 frames. The dataset is manually annotated for each frame and the test set is divided into normal and challenging categories. We further divided that dataset into subsets of the above mentioned categories. Each subset had the following number of frames:
 <br><br>
 <div style="text-align: center;">
-<img style="height: 100px;" alt="" src="dataset_split.png">
+<img style="height: 120px;" alt="" src="dataset_split.png">
 </div>
 <br><br>
 In the classical approach, we had to make some decisions regarding the hyperparameter values. The parameters were set as follows:
 <ol>
   <li> <strong> Matrices for perspective transform: </strong> The destination matrix contains the points corresponding to the points in the source matrix. The matrix values are shown below. Each row in the source matrix maps to the same row in the destination matrix. <br>
     <div style="text-align: center;">
-    <img style="height: 100px;" alt="" src="source_matrix.png">
-    <img style="height: 100px;" alt="" src="dest_matrix.png">
+    <img style="height: 120px;" alt="" src="source_matrix.png">
+    <img style="height: 120px;" alt="" src="dest_matrix.png">
     </div>
     <br>
   </li>
