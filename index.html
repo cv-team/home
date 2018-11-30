@@ -51,10 +51,15 @@ To compare the two approaches, we use a similar accuracy formula across the appr
 A figure that conveys the main idea behind the project or the main application being addressed.
 <br><br> -->
 <!-- Main Illustrative Figure -->
+  <h5> Classical Computer Vision </h5>
 <div style="text-align: center;">
 <img style="height: 250px;" alt="" src="abstract_image.png">
 </div>
-
+ <br>
+  <h5> Machine Learning </h5>
+<div style="text-align: center;">
+<img style="height: 250px;" alt="" src="abstract_image.png">
+</div>
 <br><br>
 <!-- Introduction -->
   <h3><span style="text-decoration: underline;">Introduction</span></h3>
@@ -66,7 +71,7 @@ To achieve lane detection our team focuses on two approaches: classical and mach
 <br><br>
 
 <h4>Classical Approach</h4>
-Matching a line to a potential lane involves multiple steps: perspective transform, pixel counting, and spline regression.  We operated with the assumption that the road would be in a certain area in the middle of the image, and we considered this assumption valid since a dashcam will usually be stationarily mounted on the car.  A perspective transform can be applied on this section to emphasize the lines and create a bird’s eye view of the road. To achieve this, we use the getPerspectiveTransform method in openCV which requires a list of the source coordinate points and the corresponding coordinate points in the bird’s eye view. We obtain these correspondences by choosing an area where we expect lanes to be, and map the points to a square.  Next, we threshold the grayscale version of our image so that only very white pixels will be detected; this thresholding is meant to filter out non-lane artifacts, since road lanes are usually painted white.  After the thresholding, we search for pixels in two rectangular areas that represent our guess for where the lane would be located.  As pixels are detected in the rectangles, the rectangles are iteratively adjusted, so that the midpoint of the rectangle is at the location of highest pixel concentration.  Once the boxes reach the top of the image, a path is formed that highlights the path of highest detected pixel density.  The spline is matched according to this path, and is subsequently drawn on the image.  The warped image is then unwarped back to the original perspective, so that the predicted line is overlain on the original image.
+Matching a line to a potential lane involves multiple steps: perspective transform, pixel counting, and spline regression [6].  We operated with the assumption that the road would be in a certain area in the middle of the image, and we considered this assumption valid since a dashcam will usually be stationarily mounted on the car.  A perspective transform can be applied on this section to emphasize the lines and create a bird’s eye view of the road. To achieve this, we use the getPerspectiveTransform method in openCV which requires a list of the source coordinate points and the corresponding coordinate points in the bird’s eye view. We obtain these correspondences by choosing an area where we expect lanes to be, and map the points to a square.  Next, we threshold the grayscale version of our image so that only very white pixels will be detected; this thresholding is meant to filter out non-lane artifacts, since road lanes are usually painted white.  After the thresholding, we search for pixels in two rectangular areas that represent our guess for where the lane would be located.  As pixels are detected in the rectangles, the rectangles are iteratively adjusted, so that the midpoint of the rectangle is at the location of highest pixel concentration.  Once the boxes reach the top of the image, a path is formed that highlights the path of highest detected pixel density.  The spline is matched according to this path, and is subsequently drawn on the image.  The warped image is then unwarped back to the original perspective, so that the predicted line is overlain on the original image.
 <br><br>
 The radius of curvature is a measure of how much the road curves.  Since our approach uses a polynomial regression method, it is possible to calculate the radius of curvature once the polynomial is obtained.  We assumed the radius of curvature would be equivalent for both lanes since, usually, driving lanes are parallel to each other, thus we are only outputting one radius of curvature to describe the predicted lane.  The equation for the radius of curvature is as follows:
 <div style="text-align: center;">
@@ -253,6 +258,8 @@ Our current models were simulated on a standard laptop compared to specialized p
     <li> Pan, X. (2018, February 1). Spatial As Deep: Spatial CNN for Traffic Scene Understanding. Retrieved from <a href = https://xingangpan.github.io/projects/CULane.html> https://xingangpan.github.io/projects/CULane.html  </a> </li>
 
     <li> Chabert, Floris. "Automated Lens Flare Removal." </li>
+    
+    <li> Christos Kyrkou. "Udacity SDCE Nanodegree: Term 1- Project 4: Advanced Lane Finding". Retrieved from <a href = https://medium.com/@ckyrkou/udacity-sdce-nanodegree-term-1-project-4-advanced-lane-finding-f88aa1be2fc6> https://medium.com/@ckyrkou/udacity-sdce-nanodegree-term-1-project-4-advanced-lane-finding-f88aa1be2fc6 </a> </li>
   </ol>
 
   <hr>
