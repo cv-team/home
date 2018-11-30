@@ -70,7 +70,7 @@ Matching a line to a potential lane involves multiple steps: perspective transfo
 <br><br>
 The radius of curvature is a measure of how much the road curves.  Since our approach uses a polynomial regression method, it is possible to calculate the radius of curvature once the polynomial is obtained.  We assumed the radius of curvature would be equivalent for both lanes since, usually, driving lanes are parallel to each other, thus we are only outputting one radius of curvature to describe the predicted lane.  The equation for the radius of curvature is as follows:
 <div style="text-align: center;">
-<img style="height: 200px;" alt="" src="curv_formula.png">
+<img style="height: 100px;" alt="" src="curv_formula.png">
 </div>
 <br>
 Where x1 and x0 are the first and zeroth degree coefficients respectively for the regressed polynomial.
@@ -125,7 +125,7 @@ In the machine learning approach there are not many parameters that need tweakin
 To evaluate our results in terms of accuracy, we chose F-score. To evaluate our results in terms of accuracy, we chose F-score. F-score is the harmonic mean of the precision and recall. Our F-score was calculated as such:
 <br><br>
 <div style="text-align: center;">
-<img style="height: 100px;" alt="" src="fscore.png">
+<img style="height: 75px;" alt="" src="fscore.png">
 </div>
 Where
 <div style="text-align: center;">
@@ -187,7 +187,10 @@ Performance overall, with regards to F-score, for darks roads is the worst of al
 High thresholds performed the best for optimal conditions. Low thresholding once again offers less information for the fit to happen. Once a perspective transform is done and features of the image such as the sky are removed, long clusters of brighter pixels (associated with lanes) are identified as lanes. This result is expected because there is good lighting and no shadows due to the car’s surroundings. Higher thresholds allow extraction of pertinent clusters.
 
 <h5>Curved Roads</h5>
-
+<div style="text-align: center;">
+<img style="height: 500px;" alt="" src="curved_classical.png">
+</div>
+<br>
 This category also performed well, along with Optimal Conditions. The visible lane outputs are almost identical for different thresholds, as the F-scores corroborate. As the analysis above indicates, lighting conditions are good in the test images. The reasons above for optimal conditions apply here as well.
 
 
