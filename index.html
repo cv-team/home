@@ -99,15 +99,15 @@ Since the primary focus of the project is to find the optimal lane detection alg
 This project compared two approaches of detecting lanes. The first one is the classical approach involving image manipulation and feature detection. The classical approach did not need a dataset per se, since there is no “learning” involved. The second one was using Machine Learning models to train using labelled data and to detect lanes in unseen data. Collecting our own data was a challenge so we relied on existing datasets to provide us with our training data. We used the CULane dataset [3], which is a large scale dataset geared toward research on lane detection. It includes more that 55 hours of video with the extraction of 133235 frames. The dataset is manually annotated for each frame and the test set is divided into normal and challenging categories. We further divided that dataset into subsets of the above mentioned categories. Each subset had the following number of frames:
 <br><br>
 <div style="text-align: center;">
-<img style="height: 200px;" alt="" src="dataset_split.png">
+<img style="height: 150px;" alt="" src="dataset_split.png">
 </div>
 <br><br>
 In the classical approach, we had to make some decisions regarding the hyperparameter values. The parameters were set as follows:
 <ol>
   <li> <strong> Matrices for perspective transform: </strong> The destination matrix contains the points corresponding to the points in the source matrix. The matrix values are shown below. Each row in the source matrix maps to the same row in the destination matrix. <br>
     <div style="text-align: center;">
-    <img style="height: 200px;" alt="" src="source_matrix.png">
-    <img style="height: 200px;" alt="" src="dest_matrix.png">
+    <img style="height: 150px;" alt="" src="source_matrix.png">
+    <img style="height: 150px;" alt="" src="dest_matrix.png">
     </div>
     <br>
   </li>
@@ -192,6 +192,8 @@ High thresholds performed the best for optimal conditions. Low thresholding once
 </div>
 <br>
 This category also performed well, along with Optimal Conditions. The visible lane outputs are almost identical for different thresholds, as the F-scores corroborate. As the analysis above indicates, lighting conditions are good in the test images. The reasons above for optimal conditions apply here as well.
+<br><br>
+<h4> Machine Learning Approach </h4>
 
 
 <!-- Main Results Figure -->
